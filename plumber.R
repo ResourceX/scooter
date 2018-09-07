@@ -1,4 +1,6 @@
 #plumber.R
+library(rjson)
+library(RMySQL)
 
 #* Echo back the input
 #* @param msg The message to echo
@@ -21,4 +23,12 @@ function(){
 #* @post /sum
 function(a, b){
   as.numeric(a) + as.numeric(b)
+}
+
+#* Recieve data to be uploaded to MySQL
+#* curl --data '[{"id":123, "name": "Jennifer"},{"id":12, "name": "Mike"}]' "http://localhost:8000/swifter"
+#* @post /swifter
+function(req,msg=''){
+  df<-rjson::fromJSON(req$postBody)
+  list(msg = paste0("Message is received. Length of message=",length(df)))
 }
